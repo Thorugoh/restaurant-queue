@@ -1,38 +1,36 @@
-import { Dish } from "./dish";
+import { ICommand } from "./icommand";
 
 export class OrderingSystem {
-    private dishes: Dish[] = [];
-    
-    private cookingTime = 0;
+    private commandQueue: ICommand[] = []; 
+    private cookingTime = 0;   
     private isCooking = false;
 
-    addToQueue(dish: Dish) {
-        this.dishes.push(dish);
-        this.cookingTime += dish.cookingTime;
-
-        if (!this.isCooking) {
-            this.cook();
+    enqueueCommand(command: ICommand) {
+        this.commandQueue.push(command);
+        this.cookingTime += command.getCookingTime();
+        if(!this.isCooking) {
+            this.processCommands();
         }
-
-        return this.cookingTime;
     }
 
-    async cook() {
+    async processCommands() {
         if (this.isCooking) {
             return;
         }
 
         this.isCooking = true;
-        while(this.dishes.length > 0) {
-            const dish = this.dishes.shift();
-            if(dish) {
-                console.log(`Cooking ${dish.name}`);
-                
-                await dish.cook();
-                this.cookingTime -= dish.cookingTime;
+        while(this.commandQueue.length > 0) {
+            const command = this.commandQueue.shift();
+            if(command) {
+                await command.execute();
+                this.cookingTime -= command.getCookingTime();
             }
         }
 
         this.isCooking = false;
+    }
+
+    getTotalCookingTime(): number {
+        return this.cookingTime;
     }
 }

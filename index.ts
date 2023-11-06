@@ -26,15 +26,13 @@ const main = async () => {
         console.clear();
         printMenu();
         const item = menuItems[Number(choice) - 1];
-        const dish = new Dish(item.name, item.cookingTime);
-        const cookinTime = system.addToQueue(dish);
-        console.log(`It will take ${cookinTime / 4} seconds for preparing a ${item.name}`);
+        const dishCommand = new Dish(item.name, item.cookingTime);
+        system.enqueueCommand(dishCommand);
+        console.log(`It will take ${system.getTotalCookingTime() / 4} seconds for preparing a ${item.name}`);
     }
 }
 
 const system = new OrderingSystem();
-system.cook();
-
 main();
 
          
