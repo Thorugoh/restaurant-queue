@@ -19,7 +19,6 @@ function printMenu() {
 }
 
 const main = async () => {
-
     printMenu();
 
     for await (const choice of console) {
@@ -27,8 +26,8 @@ const main = async () => {
         printMenu();
         const item = menuItems[Number(choice) - 1];
         const dish = new Dish(item.name, item.cookingTime);
-        const cookinTime = system.addToQueue(dish);
-        console.log(`It will take ${cookinTime / 4} seconds for preparing a ${item.name}`);
+        const cookingTime = system.addToQueue(dish);
+        console.log(`It will take ${cookingTime / 4} seconds for preparing a ${item.name}`);
     }
 }
 
